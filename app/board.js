@@ -1,7 +1,7 @@
 export const BoardConfig = {
-  'size': 7,
+  'size': 7, // board size
   'padding': 100,
-  'radius': 40,
+  'radius': 40, // piece radius
   'gap': 4, // gap b/w pieces
   'colors': {
     'default': 0xFFFFFF,
@@ -42,62 +42,39 @@ export class Board {
   isGameFinished(row, col, color) {
     // takes last drawn piece as input
     return this.isGameFinishedHorizontally(row, col, color) |
-           this.isGameFinishedVertically(row, col, color)/* |
+           this.isGameFinishedVertically(row, col, color) |
            this.isGameFinishedDiagonallyTopBottom(row, col, color) |
-           this.isGameFinishedDiagonallyBottomTop(col, row, color)*/;
+           this.isGameFinishedDiagonallyBottomTop(row, col, color);
   }
 
-  /*isGameFinishedHelper(start, end, color) {
-    let slope = (end.y - start.y)/(end.x - start.x);
-    // set start to one having smaller x coordinate
-    if(start.x > end.x) {
-      let tmp = start;
-      start = end; end = tmp;
-    }
+  isGameFinishedDiagonallyTopBottom(row, col, color) {
+    let tmp = Math.min(row, col, 3)
+    let startX = col - tmp;
+    let startY = row - tmp;
+    tmp = Math.min(BoardConfig.size-1-row, BoardConfig.size-1-col, 3);
+    let endX = col + tmp;
+    let endY = row + tmp;
     let cntSameColor = 0;
-    for(let x=start.x; x<=end.x; x++) {
-      let y = slope*(x-start.x) + start.y;
-      if(this.pieces[y] == undefined) {console.log(y)};
-      if(this.pieces[y][x] != color)
+    for(let i=startX, j=startY; i<=endX, j<=endY; i++, j++) {
+      if(this.pieces[j][i] !== color)
         cntSameColor = 0;
       else
         cntSameColor++;
 
       if(cntSameColor == 4) return true;
     }
-  }
-
-  isGameFinishedHorizontally(row, col, color) {
     return false;
-  }
-  isGameFinishedVertically(row, col, color) {
-    let start = { 'x': Math.max(col-3, 0), 'y': row };
-    let end = { 'x': Math.min(col+3, BoardConfig.size-1), 'y': row };
-    return this.isGameFinishedHelper(start, end, color);
-  }
-
-  isGameFinishedDiagonallyTopBottom(row, col, color) {
-    let minS = Math.min(Math.max(col-3, 0), Math.max(row-3, 0));
-    let minE = Math.min(Math.min(col+3, BoardConfig.size-1), Math.min(row+3, BoardConfig.size-1));
-    let start = { 'x': minS, 'y': minS };
-    let end = { 'x': minE, 'y': minE };
-    return this.isGameFinishedHelper(start, end, color);
   }
 
   isGameFinishedDiagonallyBottomTop(row, col, color) {
-    let minS = 
-    let start = { 'x': Math.max(col-3, 0), 'y': Math.min(row+3, BoardConfig.size-1) };
-    let end = { 'x': Math.min(col+3, BoardConfig.size-1), 'y': Math.max(row-3, 0) };
-    return this.isGameFinishedHelper(start, end, color);
-  }*/
-
-  isGameFinishedDiagonallyTopBottom(row, col, color) {
-    let startC = Math.max(col-3, 0);
-    let endC = Math.min(col+3, BoardConfig.size-1);
-    let startR = Math.max(row-3, 0);
-    let endR = Math.min(row+3, BoardConfig.size-1);
+    let tmp = Math.min(col, BoardConfig.size-1-row, 3);
+    let startX = col - tmp;
+    let startY = row + tmp;
+    tmp = Math.min(BoardConfig.size-1-col, row, 3);
+    let endX = col + tmp;
+    let endY = row - tmp;
     let cntSameColor = 0;
-    for(let i=startC, j=startR; i<=endC, j<=endR; i++, j++) {
+    for(let i=startX, j=startY; i<=endX, j>=endY; i++, j--){
       if(this.pieces[j][i] !== color)
         cntSameColor = 0;
       else
