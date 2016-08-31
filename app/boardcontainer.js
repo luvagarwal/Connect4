@@ -2,7 +2,7 @@ import PIXI from 'pixi.js';
 import { Board, BoardConfig } from './board.js';
 
 
-export default class BoardRenderer extends PIXI.Container {
+export default class BoardContainer extends PIXI.Container {
 
   constructor(...args) {
      super(...args);
@@ -16,8 +16,9 @@ export default class BoardRenderer extends PIXI.Container {
   }
 
   getNewPiece(row, col, color, setName=true) {
-    let r = BoardConfig.radius, g = BoardConfig.gap;
-    let piece = new PIXI.Graphics();
+    // return a new piece at row, col with color as `color`
+    const r = BoardConfig.radius, g = BoardConfig.gap;
+    const piece = new PIXI.Graphics();
     if(setName) piece.name = `${row}${col}`;
     piece.interactive = true;
     piece.lineStyle(2, color);
@@ -28,9 +29,11 @@ export default class BoardRenderer extends PIXI.Container {
   }
 
   drawInitBoard() {
+    // add initial empty board
+    let piece;
     for(let row=0; row<BoardConfig.size; row++) {
       for(let col=0; col<BoardConfig.size; col++) {
-        let piece = this.getNewPiece(row, col, this.board.pieces[row][col]);
+        piece = this.getNewPiece(row, col, this.board.pieces[row][col]);
         piece.on('mousedown', this.onDownHandler(col));
         piece.on('touchstart', this.onDownHandler(col));
         this.addChild(piece);
@@ -39,7 +42,7 @@ export default class BoardRenderer extends PIXI.Container {
   }
 
   onDownHandler(col) {
-    let self = this;
+    const self = this;
     return function() {
       self.pieceAnimInitialize(col);
     }
@@ -47,14 +50,14 @@ export default class BoardRenderer extends PIXI.Container {
 
   pieceAnimInitialize(col) {
     // Initialize the animation of new piece thrown by player
-    let color = BoardConfig.colors[this.player];
+    const color = BoardConfig.colors[this.player];
     if(this.animPiece) return;
 
-    let r = BoardConfig.radius, g = BoardConfig.gap;
-    let piece = this.getNewPiece(0, col, color, false);
+    const r = BoardConfig.radius, g = BoardConfig.gap;
+    const piece = this.getNewPiece(0, col, color, false);
     this.addChild(piece);
-    let row = this.board.getNextInCol(col);
-    let totalDis = (2*r+g)*row;
+    const row = this.board.getNextInCol(col);
+    const totalDis = (2*r+g)*row;
     let lastFrame = +new Date;
     let vel = 0;
     this.animDetails = {
@@ -74,7 +77,8 @@ export default class BoardRenderer extends PIXI.Container {
   animatePiece() {
     if(!this.animPiece) return;
 
-    let aD = this.animDetails, eps = 1;
+    const aD = this.animDetails, eps = 1;
+
     if(aD.piece.y == aD.totalDis && aD.vel < 0 && Math.abs(aD.vel) < eps) {
       // damp the motion of piece
       this.animPiece = false;
@@ -84,7 +88,7 @@ export default class BoardRenderer extends PIXI.Container {
         return this.player;
       }
       if(this.player == 'player') {
-        let col = Math.ceil(Math.random()*6) // random selection
+        const col = Math.ceil(Math.random()*6) // random selection
         this.player = 'bot';
         this.pieceAnimInitialize(col);
       }
@@ -92,6 +96,8 @@ export default class BoardRenderer extends PIXI.Container {
         this.player = 'player';
       return false;
     }
+
+    // change dynamics of piece
     let now = +new Date;
     aD.vel += 1;
     aD.piece.y += aD.vel*(now-aD.last)/16;

@@ -49,11 +49,11 @@ export class Board {
 
   isGameFinishedDiagonallyTopBottom(row, col, color) {
     let tmp = Math.min(row, col, 3)
-    let startX = col - tmp;
-    let startY = row - tmp;
+    const startX = col - tmp;
+    const startY = row - tmp;
     tmp = Math.min(BoardConfig.size-1-row, BoardConfig.size-1-col, 3);
-    let endX = col + tmp;
-    let endY = row + tmp;
+    const endX = col + tmp;
+    const endY = row + tmp;
     let cntSameColor = 0;
     for(let i=startX, j=startY; i<=endX, j<=endY; i++, j++) {
       if(this.pieces[j][i] !== color)
@@ -68,11 +68,11 @@ export class Board {
 
   isGameFinishedDiagonallyBottomTop(row, col, color) {
     let tmp = Math.min(col, BoardConfig.size-1-row, 3);
-    let startX = col - tmp;
-    let startY = row + tmp;
+    const startX = col - tmp;
+    const startY = row + tmp;
     tmp = Math.min(BoardConfig.size-1-col, row, 3);
-    let endX = col + tmp;
-    let endY = row - tmp;
+    const endX = col + tmp;
+    const endY = row - tmp;
     let cntSameColor = 0;
     for(let i=startX, j=startY; i<=endX, j>=endY; i++, j--){
       if(this.pieces[j][i] !== color)
@@ -86,11 +86,11 @@ export class Board {
   }
 
   isGameFinishedHorizontally(row, col, color, flip=false) {
-    let start = Math.max(col-3, 0);
-    let end = Math.min(col+3, BoardConfig.size-1);
-    let cntSameColor = 0;
+    const start = Math.max(col-3, 0);
+    const end = Math.min(col+3, BoardConfig.size-1);
+    let cntSameColor = 0, c;
     for(let i=start; i <= end; i++) {
-      let c = (flip)?this.pieces[i][row]:this.pieces[row][i];
+      c = (flip)?this.pieces[i][row]:this.pieces[row][i];
       if(c !== color)
         cntSameColor = 0;
       else

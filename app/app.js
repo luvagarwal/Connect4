@@ -19,7 +19,7 @@ class Stage extends PIXI.Container {
   constructor(...args) {
     super(...args);
     this.interactive = true;
-    let board = new BoardContainer();
+    const board = new BoardContainer();
     this.board = board;
     this.addChild(board);
     this.addHeader();
@@ -30,18 +30,20 @@ class Stage extends PIXI.Container {
   }
 
   askForReset(winner) {
+    // Draw game finish, restart screen
+
     winner = (winner == 'bot')?'I win!':'You win!';
-    let restartContainer = new PIXI.Container(GAME_WIDTH, GAME_HEIGHT);
+    const restartContainer = new PIXI.Container(GAME_WIDTH, GAME_HEIGHT);
     restartContainer.name = 'restartContainer';
     restartContainer.interactive = true;
 
-    let layer = new PIXI.Graphics();
+    const layer = new PIXI.Graphics();
     layer.beginFill(0x812390, 1);
     layer.drawRect(0, 0, renderer.width, renderer.height);
     layer.alpha = 0.8;
     restartContainer.addChild(layer);
 
-    let text = new PIXI.Text(`${winner} Restart Game?`, {
+    const text = new PIXI.Text(`${winner} Restart Game?`, {
       font : 'bold 80px Courier',
       fill : '#889199',
       stroke : '#4a1850',
@@ -66,7 +68,7 @@ class Stage extends PIXI.Container {
   }
 
   onDownHandler() {
-    let self = this;
+    const self = this;
     return function() {
       self.restartGame();
     }
@@ -78,7 +80,9 @@ class Stage extends PIXI.Container {
   }
 
   addHeader() {
-    let header = new PIXI.Text('Connect 4', {
+    // draw game header
+
+    const header = new PIXI.Text('Connect 4', {
       font : 'bold 50px Courier',
       fill : '#910239',
       stroke : '#4a1850',
@@ -90,6 +94,7 @@ class Stage extends PIXI.Container {
       wordWrap : true,
       wordWrapWidth : 440
     });
+
     header.anchor.x = 0.5;
     header.anchor.y = 1;
     header.x = renderer.width/2;
@@ -100,7 +105,7 @@ class Stage extends PIXI.Container {
 // End class
 }
 
-let stage = new Stage();
+const stage = new Stage();
 
 function resize(){
   stage.scale.x = stage.scale.y = (RATIO*window.innerWidth/GAME_WIDTH);
@@ -109,13 +114,13 @@ function resize(){
 }
 
 function animate() {
-  let winner = stage.animate();
+  const winner = stage.animate();
   if(winner)
     stage.askForReset(winner);
   renderer.render(stage);
   requestAnimationFrame(animate);
 }
 
-resize();
 window.addEventListener("resize", resize);
+resize();
 animate();
