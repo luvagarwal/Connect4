@@ -23,7 +23,7 @@ export class Board {
         tmpRow.push(BoardConfig.colors.default);
       pieces.push(tmpRow);
     }
-     return pieces;   
+     return pieces;
   }
 
   getNextInCol(col) {
