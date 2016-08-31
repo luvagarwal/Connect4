@@ -1,6 +1,6 @@
 import './index.html';
 import PIXI from 'pixi.js';
-import BoardRenderer from './render.js';
+import BoardContainer from './boardcontainer.js';
 
 const GAME_WIDTH = 800, GAME_HEIGHT = 700;
 const RATIO = GAME_WIDTH/1301;
@@ -19,7 +19,7 @@ class Stage extends PIXI.Container {
   constructor(...args) {
     super(...args);
     this.interactive = true;
-    let board = new BoardRenderer();
+    let board = new BoardContainer();
     this.board = board;
     this.addChild(board);
     this.addHeader();
