@@ -2,7 +2,7 @@ import './index.html';
 import PIXI from 'pixi.js';
 import BoardContainer from './boardcontainer.js';
 
-const GAME_WIDTH = 800, GAME_HEIGHT = 700;
+const GAME_WIDTH = 800, GAME_HEIGHT = 7/8 * GAME_WIDTH;
 const RATIO = GAME_WIDTH/1301;
 const renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, {
   antialiasing: false,
@@ -21,8 +21,8 @@ class Stage extends PIXI.Container {
     this.interactive = true;
     const board = new BoardContainer();
     this.board = board;
-    this.addChild(board);
     this.addHeader();
+    this.addChild(board);
   }
 
   animate() {
@@ -33,7 +33,7 @@ class Stage extends PIXI.Container {
     // Draw game finish, restart screen
 
     winner = (winner == 'bot')?'I win!':'You win!';
-    const restartContainer = new PIXI.Container(GAME_WIDTH, GAME_HEIGHT);
+    const restartContainer = new PIXI.Container();
     restartContainer.name = 'restartContainer';
     restartContainer.interactive = true;
 
@@ -96,9 +96,8 @@ class Stage extends PIXI.Container {
     });
 
     header.anchor.x = 0.5;
-    header.anchor.y = 1;
+    header.y = 20;
     header.x = renderer.width/2;
-    header.y = 80;
     this.addChild(header);
   }
 
@@ -110,7 +109,7 @@ const stage = new Stage();
 function resize(){
   stage.scale.x = stage.scale.y = (RATIO*window.innerWidth/GAME_WIDTH);
   renderer.resize(Math.ceil(window.innerWidth * RATIO),
-                  Math.ceil(GAME_HEIGHT));
+                  Math.ceil(window.innerWidth * RATIO * 7/8));
 }
 
 function animate() {
