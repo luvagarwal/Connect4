@@ -1,6 +1,6 @@
 # Connect 4
 
-This game is written in ES6 built using PIXI.js with NPM Webpack build. Game is running at http://luviiit.github.io/Connect4/
+This game is written in ES6 built using PIXI.js with Webpack build. Game is running at http://luviiit.github.io/Connect4/
 
 ## Running Instructions
 
